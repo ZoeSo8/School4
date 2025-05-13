@@ -2,6 +2,7 @@ package ru.hogwarts.school.school.services;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.school.model.Faculty;
+import ru.hogwarts.school.school.repository.FacultyRepository;
 
 
 import java.util.Collection;
@@ -11,35 +12,33 @@ import java.util.stream.Collectors;
 
 @Service
 public class FacultyServices {
-    private HashMap<Long, Faculty> facultyRoster = new HashMap<>();
-    private long lastId = 0;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyServices(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        facultyRoster.put(lastId, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRoster.get(id);
+
+        return facultyRepository.findById(id).get();
     }
 
     public Collection<Faculty> findFacultyColor(String color) {
-       return facultyRoster.values().stream()
+       return facultyRepository.findAll().stream()
                .filter(faculty -> Objects.equals(faculty.getColor(),color))
                .collect(Collectors.toList());
             }
 
     public Faculty editFaculty(Faculty faculty) {
-        if (facultyRoster.containsKey(faculty.getId())) {
-            facultyRoster.put(faculty.getId(), faculty);
-            return faculty;
-        }
-        return null;
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(long id) {
-        return facultyRoster.remove(id);
+    public void deleteFaculty(long id) {
+        facultyRepository.deleteById(id);
     }
 
 }
