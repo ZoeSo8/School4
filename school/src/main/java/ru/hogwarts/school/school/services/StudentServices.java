@@ -1,6 +1,7 @@
 package ru.hogwarts.school.school.services;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.school.model.Faculty;
 import ru.hogwarts.school.school.model.Student;
 import ru.hogwarts.school.school.repository.StudentRepository;
 
@@ -41,4 +42,5 @@ public class StudentServices {
     public void deleteStudent(long id) {
         studentRepository.deleteById(id);
     }
+
 }

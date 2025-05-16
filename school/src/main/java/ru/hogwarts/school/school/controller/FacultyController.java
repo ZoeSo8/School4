@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.school.model.Faculty;
 import ru.hogwarts.school.school.services.FacultyServices;
-
+import org.springframework.http.HttpStatusCode;
 
 import java.util.Collection;
 import java.util.Collections;
