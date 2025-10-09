@@ -1,11 +1,11 @@
-package ru.hogwarts.school.school.controller;
+package ru.hogwarts.school.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.school.model.Student;
-import ru.hogwarts.school.school.services.StudentServices;
-
+import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.services.StudentServices;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +31,7 @@ public class StudentController {
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
+
         return studentServices.createStudent(student);
     }
 
@@ -44,15 +45,42 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteBook(@PathVariable Long id) {
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
         studentServices.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{age}")
-    public ResponseEntity <Collection<Student>> findStudentAge(@RequestParam(required = false) int age) {
-        if (age> 0) {
+    @GetMapping("/age/{age}")
+    public ResponseEntity<Collection<Student>> findStudentAge(@RequestParam(required = false) int age) {
+        if (age > 0) {
             return ResponseEntity.ok(studentServices.findStudentAge(age));
         }
         return ResponseEntity.ok(Collections.emptyList());
+    }
+
+    @GetMapping("/age-range")
+    public Collection<Student> getStudentsByAgeRange(
+            @RequestParam("min") int minAge,
+            @RequestParam("max") int maxAge) {
+
+        if (minAge < 0 || maxAge < 0) {
+            throw new IllegalArgumentException("Возраст не может быть отрицательным");
+        }
+
+        if (minAge > maxAge) {
+            throw new IllegalArgumentException("Минимальный возраст не может быть больше максимального");
+        }
+
+        return studentServices.getStudentsByAgeRange(minAge, maxAge);
+    }
+
+    @GetMapping("/{id}/faculty")
+    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
+        Faculty faculty = studentServices.getStudentFaculty(id);
+        if (faculty != null) {
+            return ResponseEntity.ok(faculty);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
