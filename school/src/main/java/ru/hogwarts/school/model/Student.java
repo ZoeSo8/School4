@@ -1,6 +1,8 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +11,9 @@ import jakarta.persistence.Id;
 import java.util.Objects;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Student {
     @Id
     @GeneratedValue
@@ -17,8 +22,8 @@ public class Student {
    private int age;
 
     @ManyToOne
-    @JoinColumn(name = "faculty id")
-@JsonIgnore
+    @JoinColumn(name = "faculty_id")
+
     private Faculty faculty;
 
     public Faculty getFaculty() { return faculty; }
