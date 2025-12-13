@@ -28,7 +28,7 @@ public class StudentServices {
     }
 
     public Student findStudent(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Collection<Student> findStudentAge(int age) {
