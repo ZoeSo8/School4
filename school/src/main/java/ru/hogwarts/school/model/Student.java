@@ -26,6 +26,17 @@ public class Student {
 
     private Faculty faculty;
 
+    @OneToOne
+    @JoinColumn(name = "avatar")
+    private Avatar avatar;
+
+
+    public Avatar getAvatar() { return avatar; }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
     public Faculty getFaculty() { return faculty; }
 
     public void setFaculty(Faculty faculty) {
